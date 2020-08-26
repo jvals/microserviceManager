@@ -22,14 +22,14 @@ When the task is finished, I might go to start up application C, D, E, where C
 and D are connected to E, and E is connected to A. B is not needed now, so we
 power down B, change configurations in the other applications and power them up.
 
-This gets tiring real quick. Working like this requires knowledge of multiple
+This gets tiring very quickly. Working like this requires knowledge of multiple
 configuration formats, what needs to be connected where, which ports things are
 running on, etc. The number of applications you have to juggle seem to explode
 once you start working with micro-frontends, which (in my experience) are much
 smaller and more numerous than traditional "backend" microservices.
 
 If you always spin up the same applications, you can create a small set of
-scripts than spin up the environments that you need. However, if your
+scripts that spin up the environments that you need. However, if your
 environment is dynamic, the number of such configurations would grow
 exponentially. In an environment where any app can be either on or off, you have 
 2^n possible configurations, where n is the number of applications.  
@@ -72,7 +72,7 @@ with environment variables.
 
 The third input is _runConfig.yml_. This file contains "modes" for your 
 services, "NOOP", "RUN" and "BUILD". 
-* A service in NOOP mode will not be included in the output docker-compose.yml. 
+* A service in NOOP mode will _not_ be included in the output docker-compose.yml. 
 * A service in RUN mode will be included with its image property set. This will 
 result in a container created from a pre built image.
 * A service in BUILD mode will be included and its image will be built locally.
