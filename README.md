@@ -80,3 +80,7 @@ result in a container created from a pre built image.
 This three-way split means most of your changes will be to the "modes" in the
 runConfig, while the other input files (after some initial setup) will remain
 untouched.
+
+## Examples
+You can find an example with instructions in the examples folder.  
+See [examples/micro-frontend-hello-world](examples/micro-frontend-hello-world)
