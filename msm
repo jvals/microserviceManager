@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -e
+
+if [ ! -e "./build/install/microserviceManager/bin/microserviceManager" ]; then
+  echo "No executable found, try running './gradlew installDist'"
+  exit 1
+fi
+
+./build/install/microserviceManager/bin/microserviceManager "$@"

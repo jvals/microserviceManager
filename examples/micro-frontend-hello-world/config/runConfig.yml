@@ -1,0 +1,18 @@
+# modes
+# BUILD: build local code and run it in a container locally
+# RUN: get latest image and run it in a container locally
+# NOOP: do nothing
+
+# context is only used in BUILD mode and should contain the path to your local project
+
+title-podlet:
+  mode: "BUILD"
+  context: ""
+
+button-podlet:
+  mode: "BUILD"
+  context: ""
+
+hello-world-layout:
+  mode: "BUILD"
+  context: ""

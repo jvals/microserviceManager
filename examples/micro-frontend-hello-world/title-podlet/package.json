@@ -1,0 +1,19 @@
+{
+  "name": "title-podlet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@podium/browser": "^1.0.0-beta.4",
+    "@podium/podlet": "^4.4.1",
+    "browserify-middleware": "^8.1.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
+}

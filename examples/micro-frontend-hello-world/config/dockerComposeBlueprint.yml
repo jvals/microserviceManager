@@ -1,0 +1,20 @@
+version: "2.4"
+services:
+  title-podlet:
+    container_name: "title_podlet_local"
+    image: ""
+    ports:
+      - "8001:8001"
+    mem_limit: "100M"
+  button-podlet:
+    container_name: "button_podlet_local"
+    image: ""
+    ports:
+      - "8002:8002"
+    mem_limit: "100M"
+  hello-world-layout:
+    container_name: "hello_world_layout_local"
+    image: ""
+    ports:
+      - "8000:8000"
+    mem_limit: "100M"
