@@ -182,8 +182,58 @@ internal class DockerComposeServiceTest {
                         "CONSTRETTO_TAGS" to "dev",
                         "JAVA_OPTS" to "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
                 ),
+                memLimit = "1000M"
+        ))
+        assertEquals(expectedServices, DockerComposeService.applyRunConfiguration(inputServices, runConfigurations))
+    }
+
+    @Test
+    fun `Context and dockerfile added correctly in build mode`() {
+        val inputServices = mapOf(
+                ServiceName(name = "projectA") to Service(
+                        containerName = "projectA_local",
+                        ports = listOf(Port(8080, 8080)),
                         memLimit = "1000M"
-                ))
+                ),
+                ServiceName(name = "projectB") to Service(
+                        containerName = "projectB_local",
+                        ports = listOf(Port(8081, 8081)),
+                        memLimit = "1000M"
+                )
+        )
+
+        val runConfigurations = mapOf(
+                ServiceName(name = "projectA") to RunConfiguration(
+                        mode = RunMode.BUILD,
+                        context = "path/to/projectA",
+                        dockerfile = "path/to/dockerfile"
+                ),
+                ServiceName(name = "projectB") to RunConfiguration(
+                        mode = RunMode.BUILD,
+                        context = "path/to/projectB"
+                )
+        )
+
+        val expectedServices = mapOf(
+                ServiceName(name = "projectA") to Service(
+                        containerName = "projectA_local",
+                        build = Build(
+                                context = "path/to/projectA",
+                                dockerfile = "path/to/dockerfile"
+                        ),
+                        ports = listOf(Port(8080, 8080)),
+                        memLimit = "1000M"
+                ),
+                ServiceName(name = "projectB") to Service(
+                        containerName = "projectB_local",
+                        build = Build(
+                                context = "path/to/projectB"
+                        ),
+                        ports = listOf(Port(8081, 8081)),
+                        memLimit = "1000M"
+                )
+        )
+
         assertEquals(expectedServices, DockerComposeService.applyRunConfiguration(inputServices, runConfigurations))
     }
 
