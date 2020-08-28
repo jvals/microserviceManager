@@ -21,10 +21,8 @@ class DockerComposeService {
                                 build = if (runConfigurations[entry.key]?.mode == RunMode.BUILD) {
                                     val context = runConfigurations[entry.key]?.context
                                     val dockerfile = runConfigurations[entry.key]?.dockerfile
-                                    if (context != null && dockerfile != null) {
+                                    if (context != null) {
                                         Build(context, dockerfile)
-                                    } else if (context != null) {
-                                        Build(context)
                                     } else {
                                         null
                                     }
