@@ -7,7 +7,7 @@ import java.io.PrintStream
 
 internal class DockerComposeCommandTest {
     @Test
-    fun `Test that the command applies a run configuration`() {
+    fun `Test that DockerComposeCommand applies a run configuration and a connection configuration and produces a docker-compose file`() {
         val output = ByteArrayOutputStream()
         System.setOut(PrintStream(output))
 
