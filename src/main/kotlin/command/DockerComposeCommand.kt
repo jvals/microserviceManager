@@ -9,6 +9,8 @@ import com.github.ajalt.clikt.parameters.options.option
 import model.ConnectionConfigurations
 import model.DockerCompose
 import model.RunConfigurations
+import model.Service
+import model.ServiceName
 import service.DockerComposeService
 import java.io.File
 import java.io.FileNotFoundException
@@ -29,35 +31,39 @@ class DockerComposeCommand : CliktCommand() {
         val runConfigurationsRaw: String = readFileRequired(runConfigurationPath)
         val runConfigurations = yaml.parse(RunConfigurations.serializer(), runConfigurationsRaw)
 
-        val allKnownServices = dockerComposeBlueprint.services
-        val servicesToRunOrBuild = DockerComposeService.applyRunConfiguration(
-                allKnownServices,
-                runConfigurations.runConfigurations
-        )
-
         val connectionConfigurationRaw: String? = readFileOptional(connectionConfigurationPath)
-
-        val connectedServices = if (connectionConfigurationRaw != null && connectionConfigurationRaw.isNotEmpty()) {
-            val connectionConfigurations: ConnectionConfigurations = yaml.parse(ConnectionConfigurations.serializer(), connectionConfigurationRaw)
-
-            DockerComposeService.applyConnectionConfiguration(
-                    servicesToRunOrBuild,
-                    connectionConfigurations.connectionConfigurations
-            )
+        val connectionConfigurations: ConnectionConfigurations? = if (connectionConfigurationRaw != null && connectionConfigurationRaw.isNotEmpty()) {
+            yaml.parse(ConnectionConfigurations.serializer(), connectionConfigurationRaw)
         } else null
 
+        val allKnownServices = dockerComposeBlueprint.services
+
+        val runnableConnectedServices = allKnownServices
+                .applyRunConfiguration(runConfigurations)
+                .applyConnectionConfiguration(connectionConfigurations)
+
         val dockerComposeOutput = dockerComposeBlueprint.copy(
-                services = connectedServices ?: servicesToRunOrBuild
+                services = runnableConnectedServices
         )
 
         val dockerComposeOutputRaw = yaml.stringify(DockerCompose.serializer(), dockerComposeOutput)
-
 
         output?.let {
             println("Writing to file $it")
             File(it).writeText(dockerComposeOutputRaw)
             println("Finished generating compose file in $it")
         } ?: println(dockerComposeOutputRaw)
+    }
+
+    private fun Map<ServiceName, Service>.applyRunConfiguration(runConfigurations: RunConfigurations): Map<ServiceName, Service> {
+        return DockerComposeService.applyRunConfiguration(this, runConfigurations.runConfigurations)
+    }
+
+    private fun Map<ServiceName, Service>.applyConnectionConfiguration(connectionConfigurations: ConnectionConfigurations?): Map<ServiceName, Service> {
+        // This method returns the map unmodified if connectionConfigurations is null
+        return connectionConfigurations?.let {
+            DockerComposeService.applyConnectionConfiguration(this, connectionConfigurations.connectionConfigurations)
+        } ?: this
     }
 
     private fun readFileRequired(filePath: String): String {
