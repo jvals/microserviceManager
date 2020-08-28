@@ -53,21 +53,20 @@ class DockerComposeService {
                     })
                 } ?: emptyMap()
                 services.key to services.value.copy(
-                        environment = services.value.environment?.mergeMaps(newEnvironmentVariables)
+                        environment = services.value.environment?.mergeEnvironmentVariables(newEnvironmentVariables)
                                 ?: newEnvironmentVariables
                 )
             }.toMap()
         }
 
-        // TODO rename "map2"
-        private fun Map<String, String>.mergeMaps(map2: Map<String, String>): Map<String, String> {
+        private fun Map<String, String>.mergeEnvironmentVariables(newVariables: Map<String, String>): Map<String, String> {
             val mergedMap = this.toMutableMap()
-            map2.forEach { (map2Key: String, map2value: String) ->
-                if (this.containsKey(map2Key)) {
-                    val mergedValue = "$map2value,${this.getValue(map2Key)}"
-                    mergedMap[map2Key] = mergedValue
+            newVariables.forEach { (newKey: String, newValue: String) ->
+                if (this.containsKey(newKey)) {
+                    val mergedValue = "$newValue,${this.getValue(newKey)}"
+                    mergedMap[newKey] = mergedValue
                 } else {
-                    mergedMap[map2Key] = map2value
+                    mergedMap[newKey] = newValue
                 }
             }
 
