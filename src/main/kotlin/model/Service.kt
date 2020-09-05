@@ -13,5 +13,6 @@ data class Service(
     @SerialName("depends_on") val dependsOn: List<Service>? = null,
     @SerialName("extra_hosts") val extraHosts: List<ExtraHost>? = null,
     val environment: Map<String, String>? = null,
-    @SerialName("mem_limit") val memLimit: String
+    @SerialName("mem_limit") val memLimit: String,
+    val volumes: List<String>? = null
 )
