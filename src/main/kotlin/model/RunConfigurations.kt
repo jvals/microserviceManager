@@ -17,19 +17,20 @@ data class RunConfigurations(val runConfigurations: Map<ServiceName, RunConfigur
     companion object : KSerializer<RunConfigurations> {
         override fun serialize(encoder: Encoder, value: RunConfigurations) {
             encoder.encodeSerializableValue(
-                    MapSerializer(
-                            ServiceName.serializer(),
-                            RunConfiguration.serializer()
-                    ),
-                    value.runConfigurations)
+                MapSerializer(
+                    ServiceName.serializer(),
+                    RunConfiguration.serializer()
+                ),
+                value.runConfigurations
+            )
         }
 
         override fun deserialize(decoder: Decoder): RunConfigurations {
             val configurations = decoder.decodeSerializableValue(
-                    MapSerializer(
-                            ServiceName.serializer(),
-                            RunConfiguration.serializer()
-                    )
+                MapSerializer(
+                    ServiceName.serializer(),
+                    RunConfiguration.serializer()
+                )
             )
             return RunConfigurations(configurations)
         }

@@ -3,4 +3,4 @@ package model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Connection(val connectionName: String, val environmentVars: List<EnvironmentVar>)
+data class Connection(val internalConnections: List<EnvironmentVar>, val externalConnections: List<EnvironmentVar>? = null)

@@ -32,18 +32,20 @@ class DockerComposeCommand : CliktCommand() {
         val runConfigurations = yaml.parse(RunConfigurations.serializer(), runConfigurationsRaw)
 
         val connectionConfigurationRaw: String? = readFileOptional(connectionConfigurationPath)
-        val connectionConfigurations: ConnectionConfigurations? = if (connectionConfigurationRaw != null && connectionConfigurationRaw.isNotEmpty()) {
-            yaml.parse(ConnectionConfigurations.serializer(), connectionConfigurationRaw)
-        } else null
+        val connectionConfigurations: ConnectionConfigurations? =
+            if (connectionConfigurationRaw != null && connectionConfigurationRaw.isNotEmpty()) {
+                yaml.parse(ConnectionConfigurations.serializer(), connectionConfigurationRaw)
+            } else null
 
         val allKnownServices = dockerComposeBlueprint.services
+        val externalServices = DockerComposeService.getExternalServices(allKnownServices, runConfigurations)
 
         val runnableConnectedServices = allKnownServices
-                .applyRunConfiguration(runConfigurations)
-                .applyConnectionConfiguration(connectionConfigurations)
+            .applyRunConfiguration(runConfigurations)
+            .applyConnectionConfiguration(connectionConfigurations, externalServices)
 
         val dockerComposeOutput = dockerComposeBlueprint.copy(
-                services = runnableConnectedServices
+            services = runnableConnectedServices
         )
 
         val dockerComposeOutputRaw = yaml.stringify(DockerCompose.serializer(), dockerComposeOutput)
@@ -59,10 +61,13 @@ class DockerComposeCommand : CliktCommand() {
         return DockerComposeService.applyRunConfiguration(this, runConfigurations.runConfigurations)
     }
 
-    private fun Map<ServiceName, Service>.applyConnectionConfiguration(connectionConfigurations: ConnectionConfigurations?): Map<ServiceName, Service> {
+    private fun Map<ServiceName, Service>.applyConnectionConfiguration(
+        connectionConfigurations: ConnectionConfigurations?,
+        externalServices: Set<ServiceName>
+    ): Map<ServiceName, Service> {
         // This method returns the map unmodified if connectionConfigurations is null
         return connectionConfigurations?.let {
-            DockerComposeService.applyConnectionConfiguration(this, connectionConfigurations.connectionConfigurations)
+            DockerComposeService.applyConnectionConfiguration(this, connectionConfigurations.connectionConfigurations, externalServices)
         } ?: this
     }
 

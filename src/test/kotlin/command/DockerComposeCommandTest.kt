@@ -12,14 +12,14 @@ internal class DockerComposeCommandTest {
         System.setOut(PrintStream(output))
 
         DockerComposeCommand().parse(
-                listOf(
-                        "-c",
-                        "src/test/config/connectionConfig.yml",
-                        "-d",
-                        "src/test/config/dockerComposeBlueprint.yml",
-                        "-r",
-                        "src/test/config/runConfig.yml"
-                )
+            listOf(
+                "-c",
+                "src/test/config/connectionConfig.yml",
+                "-d",
+                "src/test/config/dockerComposeBlueprint.yml",
+                "-r",
+                "src/test/config/runConfig.yml"
+            )
         )
         val expectedDockerCompose = """version: "2.4"
 services:

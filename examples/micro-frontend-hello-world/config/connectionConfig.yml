@@ -1,5 +1,7 @@
 hello-world-layout:
   title-podlet:
-    - TITLE_PODLET_ADDR=http://title-podlet:8001
+    internalConnections:
+      - TITLE_PODLET_ADDR=http://title-podlet:8001
   button-podlet:
-    - BUTTON_PODLET_ADDR=http://button-podlet:8002
+    internalConnections:
+      - BUTTON_PODLET_ADDR=http://button-podlet:8002

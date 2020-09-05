@@ -17,19 +17,20 @@ data class ConnectionConfigurations(val connectionConfigurations: Map<ServiceNam
     companion object : KSerializer<ConnectionConfigurations> {
         override fun serialize(encoder: Encoder, value: ConnectionConfigurations) {
             encoder.encodeSerializableValue(
-                    MapSerializer(
-                            ServiceName.serializer(),
-                            ConnectionConf.serializer()
-                    ),
-                    value.connectionConfigurations)
+                MapSerializer(
+                    ServiceName.serializer(),
+                    ConnectionConf.serializer()
+                ),
+                value.connectionConfigurations
+            )
         }
 
         override fun deserialize(decoder: Decoder): ConnectionConfigurations {
             val configurations = decoder.decodeSerializableValue(
-                    MapSerializer(
-                            ServiceName.serializer(),
-                            ConnectionConf.serializer()
-                    )
+                MapSerializer(
+                    ServiceName.serializer(),
+                    ConnectionConf.serializer()
+                )
             )
             return ConnectionConfigurations(configurations)
         }

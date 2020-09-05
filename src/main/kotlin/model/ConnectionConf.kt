@@ -1,29 +1,36 @@
 package model
 
-import kotlinx.serialization.*
+import kotlinx.serialization.Decoder
+import kotlinx.serialization.Encoder
+import kotlinx.serialization.ImplicitReflectionSerializer
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializer
 import kotlinx.serialization.builtins.MapSerializer
-import kotlinx.serialization.builtins.list
-import kotlinx.serialization.builtins.serializer
 
 @Serializable
-data class ConnectionConf(val connections: Map<ServiceName, List<EnvironmentVar>>) {
+data class ConnectionConf(val connections: Map<ServiceName, Connection>) {
     @Serializer(forClass = ConnectionConf::class)
     companion object : KSerializer<ConnectionConf> {
         @ImplicitReflectionSerializer
         override fun serialize(encoder: Encoder, value: ConnectionConf) {
-            encoder.encodeSerializableValue(MapSerializer<ServiceName, List<EnvironmentVar>>(
+            encoder.encodeSerializableValue(
+                MapSerializer(
                     ServiceName.serializer(),
-                    EnvironmentVar.serializer().list
-            ), value.connections)
+                    Connection.serializer()
+                ), value.connections
+            )
         }
 
         @ImplicitReflectionSerializer
         override fun deserialize(decoder: Decoder): ConnectionConf {
-            val connectionConf = decoder.decodeSerializableValue(MapSerializer(
+            val connections = decoder.decodeSerializableValue(
+                MapSerializer(
                     ServiceName.serializer(),
-                    EnvironmentVar.serializer().list
-            ))
-            return ConnectionConf(connectionConf)
+                    Connection.serializer()
+                )
+            )
+            return ConnectionConf(connections)
         }
     }
 }

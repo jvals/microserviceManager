@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class RunMode {
-    BUILD, RUN, NOOP
+    BUILD, RUN, NOOP, EXTERNAL
 }

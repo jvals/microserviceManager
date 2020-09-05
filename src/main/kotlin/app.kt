@@ -10,9 +10,9 @@ class App : CliktCommand() {
         context { helpFormatter = CliktHelpFormatter(showDefaultValues = true) }
     }
 
-    override fun run() = Unit
+    override fun run(): Unit = Unit
 }
 
 fun main(args: Array<String>): Unit = App()
-        .subcommands(DockerComposeCommand(), BashCommand())
-        .main(args)
+    .subcommands(DockerComposeCommand(), BashCommand())
+    .main(args)
