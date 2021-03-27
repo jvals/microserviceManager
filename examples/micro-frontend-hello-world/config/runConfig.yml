@@ -1,18 +1,23 @@
 # modes
 # BUILD: build local code and run it in a container locally
 # RUN: get latest image and run it in a container locally
+# EXTERNAL: App will not be started as a container, but running containers will try to connect to the app through the external configuration
 # NOOP: do nothing
 
 # context is only used in BUILD mode and should contain the path to your local project
+# dockerfile is only used in BUILD mode and should contain the path to your local projects dockerfile
 
 title-podlet:
   mode: "BUILD"
-  context: ""
+  context: "<REPLACE_WITH_ABSOLUTE_PATH>/microserviceManager/examples/micro-frontend-hello-world/title-podlet/"
+  dockerfile: "<REPLACE_WITH_ABSOLUTE_PATH>/microserviceManager/examples/micro-frontend-hello-world/title-podlet/Dockerfile"
 
 button-podlet:
   mode: "BUILD"
-  context: ""
+  context: "<REPLACE_WITH_ABSOLUTE_PATH>/microserviceManager/examples/micro-frontend-hello-world/button-podlet/"
+  dockerfile: "<REPLACE_WITH_ABSOLUTE_PATH>/microserviceManager/examples/micro-frontend-hello-world/button-podlet/Dockerfile"
 
 hello-world-layout:
   mode: "BUILD"
-  context: ""
+  context: "<REPLACE_WITH_ABSOLUTE_PATH>/microserviceManager/examples/micro-frontend-hello-world/hello-world-layout/"
+  dockerfile: "<REPLACE_WITH_ABSOLUTE_PATH>/microserviceManager/examples/micro-frontend-hello-world/hello-world-layout/Dockerfile"
