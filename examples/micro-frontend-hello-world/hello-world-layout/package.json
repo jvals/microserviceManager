@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@podium/layout": "^4.6.0",
+    "@podium/layout": "^4.6.110",
     "express": "^4.17.1"
   }
 }
